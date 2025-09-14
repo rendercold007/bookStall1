@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechFest Book Store</title>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
     <style>
         * {
             margin: 0;
@@ -50,7 +53,7 @@
             font-size: 2.5em;
             margin-bottom: 10px;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -544,6 +547,13 @@
 
     <script>
         // Book inventory
+
+        (function(){
+    emailjs.init({
+        publicKey: "zkULap0MG4jY0YiE4", // <-- HERE
+    });
+})();
+
         const books = [
             {
                 id: 1,
@@ -810,6 +820,13 @@
                     book.stock -= cartItem.quantity;
                 }
             });
+
+            emailjs.send('service_gimtres', 'template_ac2vcyc', emailParams) // <-- PASTE YOUR IDs HERE
+    .then(function(response) {
+        console.log('SUCCESS! Email sent.');
+    }, function(error) {
+        console.log('FAILED...', error);
+    });
             
             // Close checkout and show confirmation
             closeCheckoutForm();
