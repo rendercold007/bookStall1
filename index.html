@@ -471,7 +471,6 @@
         <div class="books-grid" id="books-container"></div>
     </div>
 
-    <!-- Cart Modal -->
     <div class="modal" id="cart-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -482,7 +481,6 @@
         </div>
     </div>
 
-    <!-- Checkout Form Modal -->
     <div class="modal" id="checkout-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -522,7 +520,6 @@
         </div>
     </div>
 
-    <!-- Admin Panel Modal -->
     <div class="modal" id="admin-modal">
         <div class="modal-content admin-modal-content">
             <div class="modal-header">
@@ -530,6 +527,18 @@
                 <span class="close-modal" onclick="closeAdminPanel()">&times;</span>
             </div>
             <div id="admin-content"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✅ Order Confirmed!</h2>
+                <span class="close-modal" onclick="closeConfirmation()">&times;</span>
+            </div>
+            <div id="confirmation-details" style="padding: 20px; text-align: center; line-height: 1.6;">
+                </div>
+            <button class="checkout-btn" onclick="closeConfirmation()">Continue Shopping</button>
         </div>
     </div>
 
@@ -757,6 +766,23 @@
             document.getElementById('checkout-form').reset();
         }
 
+        function showConfirmation(order) {
+            const detailsContainer = document.getElementById('confirmation-details');
+            detailsContainer.innerHTML = `
+                <p>Thank you for your order, <strong>${order.name}</strong>!</p>
+                <p>Your Order ID is: <strong style="color: #764ba2;">${order.orderId}</strong></p>
+                <p>A confirmation has been sent to <strong>${order.email}</strong>.</p>
+                <p>We will contact you at <strong>${order.phone}</strong> for delivery arrangements.</p>
+                <hr style="margin: 20px 0;">
+                <h3>Total Amount: ₹${order.total}</h3>
+            `;
+            document.getElementById('confirmation-modal').style.display = 'block';
+        }
+
+        function closeConfirmation() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+
         // Handle form submission
         document.getElementById('checkout-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -785,16 +811,16 @@
                 }
             });
             
-            // Show success message
-            alert(`Order placed successfully!\nOrder ID: ${formData.orderId}\nTotal: ₹${formData.total}\n\nWe will contact you at ${formData.phone} for delivery.`);
+            // Close checkout and show confirmation
+            closeCheckoutForm();
+            showConfirmation(formData);
             
-            // Clear cart and close modal
+            // Clear cart and update displays
             cart = [];
             updateCartDisplay();
-            closeCheckoutForm();
             renderBooks();
             
-            showNotification('Order placed successfully! Check Admin Panel for details.');
+            showNotification('Your order has been recorded!');
         });
 
         function openAdminPanel() {
@@ -847,8 +873,8 @@
                 
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                     <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
-                    <button class="export-btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="loadSavedOrders(); renderAdminPanel(); showNotification('Orders refreshed!');">🔄 Refresh Orders</button>
-                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; localStorage.removeItem('bookstore_orders'); renderAdminPanel(); showNotification('All orders deleted!'); }">🗑️ Clear All Orders</button>
+                    <button class="export-btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="renderAdminPanel(); showNotification('Orders refreshed!');">🔄 Refresh Orders</button>
+                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; renderAdminPanel(); showNotification('All orders deleted!'); }">🗑️ Clear All Orders</button>
                 </div>
                 
                 <h3>All Orders:</h3>
@@ -923,15 +949,6 @@
         renderBooks();
         updateCartDisplay();
         
-        // Show payment mode notification
-        window.addEventListener('load', function() {
-            if (!PAYMENT_CONFIG.enablePayments || PAYMENT_CONFIG.razorpayKey === 'rzp_test_YourTestKeyHere') {
-                setTimeout(() => {
-                    showNotification('💳 Payment System: TEST MODE - No real payments will be processed');
-                }, 1000);
-            }
-        });
-
         // Close modals when clicking outside
         window.onclick = function(event) {
             if (event.target.classList && event.target.classList.contains('modal')) {
