@@ -50,7 +50,7 @@
             font-size: 2.5em;
             margin-bottom: 10px;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -845,7 +845,11 @@
                     </div>
                 </div>
                 
-                <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
+                    <button class="export-btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="loadSavedOrders(); renderAdminPanel(); showNotification('Orders refreshed!');">🔄 Refresh Orders</button>
+                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; localStorage.removeItem('bookstore_orders'); renderAdminPanel(); showNotification('All orders deleted!'); }">🗑️ Clear All Orders</button>
+                </div>
                 
                 <h3>All Orders:</h3>
             `;
@@ -918,10 +922,19 @@
         // Initialize the page
         renderBooks();
         updateCartDisplay();
+        
+        // Show payment mode notification
+        window.addEventListener('load', function() {
+            if (!PAYMENT_CONFIG.enablePayments || PAYMENT_CONFIG.razorpayKey === 'rzp_test_YourTestKeyHere') {
+                setTimeout(() => {
+                    showNotification('💳 Payment System: TEST MODE - No real payments will be processed');
+                }, 1000);
+            }
+        });
 
         // Close modals when clicking outside
         window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
+            if (event.target.classList && event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
             }
         }
