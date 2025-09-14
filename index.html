@@ -821,6 +821,15 @@
                 }
             });
 
+            const emailParams = {
+        order_id: formData.orderId,
+        user_name: formData.name,
+        user_email: formData.email,
+        user_phone: formData.phone,
+        order_total: formData.total,
+        order_items: formData.items.map(item => `- ${item.title} (x${item.quantity})`).join('\n')
+    };
+
             emailjs.send('service_gimtres', 'template_ac2vcyc', emailParams) // <-- PASTE YOUR IDs HERE
     .then(function(response) {
         console.log('SUCCESS! Email sent.');
