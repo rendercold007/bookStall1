@@ -616,6 +616,9 @@
         let cart = [];
         let orders = []; // Store all orders
 
+        const database = firebase.database();
+const ordersRef = database.ref('orders'); // This points to a location named 'orders' in your database
+
         function renderBooks() {
             const container = document.getElementById('books-container');
             container.innerHTML = '';
@@ -786,7 +789,8 @@
             };
             
             // Add order to orders array
-            orders.push(formData);
+           // Save the order to Firebase using its unique orderId
+            ordersRef.child(formData.orderId).set(formData);
             
             // Update stock
             cart.forEach(cartItem => {
@@ -825,15 +829,79 @@
         function renderAdminPanel() {
             const adminContent = document.getElementById('admin-content');
             
-            if (orders.length === 0) {
-                adminContent.innerHTML = `
-                    <div class="empty-cart">
-                        <p>No orders yet</p>
-                        <p>Orders will appear here when customers place them</p>
-                    </div>
-                `;
-                return;
-            }
+            function renderAdminPanel() {
+    const adminContent = document.getElementById('admin-content');
+    adminContent.innerHTML = `<p>Loading orders...</p>`; // Show a loading message
+
+    // Fetch orders from Firebase
+    ordersRef.once('value', snapshot => {
+        const data = snapshot.val();
+        
+        // Convert the orders object from Firebase into an array
+        const orders = data ? Object.values(data) : [];
+
+        if (orders.length === 0) {
+            adminContent.innerHTML = `
+                <div class="empty-cart">
+                    <p>No orders yet</p>
+                    <p>Orders saved in Firebase will appear here</p>
+                </div>
+            `;
+            return;
+        }
+
+        // --- The rest of your code to display stats and orders remains the same ---
+        const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+        const totalBooks = orders.reduce((sum, order) => 
+            sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
+        
+        let html = `
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">${orders.length}</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">₹${totalRevenue}</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${totalBooks}</div>
+                    <div class="stat-label">Books Sold</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
+            </div>
+            
+            <h3>All Orders:</h3>
+        `;
+        
+        orders.forEach(order => {
+            const booksList = order.items.map(item => 
+                `${item.title} (×${item.quantity})`
+            ).join(', ');
+            
+            html += `
+                <div class="order-details">
+                    <h3>Order #${order.orderId}</h3>
+                    <p><strong>Date:</strong> ${order.timestamp}</p>
+                    <p><strong>Customer:</strong> ${order.name}</p>
+                    <p><strong>Email:</strong> ${order.email}</p>
+                    <p><strong>Phone:</strong> ${order.phone}</p>
+                    <p><strong>College:</strong> ${order.college}</p>
+                    <p><strong>Roll No:</strong> ${order.rollno}</p>
+                    <p><strong>Address:</strong> ${order.address}</p>
+                    <p class="order-books"><strong>Books:</strong> ${booksList}</p>
+                    <p style="font-size: 1.2em; color: #667eea;"><strong>Total:</strong> ₹${order.total}</p>
+                </div>
+            `;
+        });
+        
+        adminContent.innerHTML = html;
+    });
+}
             
             // Calculate statistics
             const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
