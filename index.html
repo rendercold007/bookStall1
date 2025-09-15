@@ -4,21 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechFest Book Store</title>
-    <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-</script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+                    // Firebase App (the core Firebase SDK) is always required and must be listed first
+                    // Add Firebase SDKs for products you want to use
+                    // See: https://firebase.google.com/docs/web/setup#available-libraries
+                    // Place these <script> tags in your HTML <head> or before your main script
+                    // Firebase v9+ Modular SDK
+                    // Add these before your custom script
+                    // --- Firebase CDN scripts start ---
+                    </script>
+                    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+                    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+                    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+                    <script>
+                    // Your web app's Firebase configuration
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyCfCyilhIwVGk-u9uz_HXa4kJj08j7iozw",
+                        authDomain: "techfest-bookstore.firebaseapp.com",
+                        databaseURL: "https://techfest-bookstore-default-rtdb.asia-southeast1.firebasedatabase.app",
+                        projectId: "techfest-bookstore",
+                        storageBucket: "techfest-bookstore.firebasestorage.app",
+                        messagingSenderId: "529918618323",
+                        appId: "1:529918618323:web:637a9d1cdce9307a264226",
+                        measurementId: "G-RYSTVB87LS"
+                    };
+                    // Initialize Firebase
+                    firebase.initializeApp(firebaseConfig);
+                    firebase.analytics();
         }
 
         .container {
@@ -53,7 +65,7 @@
             font-size: 2.5em;
             margin-bottom: 10px;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            background-clip: text;
+            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -474,6 +486,7 @@
         <div class="books-grid" id="books-container"></div>
     </div>
 
+    <!-- Cart Modal -->
     <div class="modal" id="cart-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -484,6 +497,7 @@
         </div>
     </div>
 
+    <!-- Checkout Form Modal -->
     <div class="modal" id="checkout-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -523,6 +537,7 @@
         </div>
     </div>
 
+    <!-- Admin Panel Modal -->
     <div class="modal" id="admin-modal">
         <div class="modal-content admin-modal-content">
             <div class="modal-header">
@@ -533,27 +548,19 @@
         </div>
     </div>
 
-    <div class="modal" id="confirmation-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>✅ Order Confirmed!</h2>
-                <span class="close-modal" onclick="closeConfirmation()">&times;</span>
-            </div>
-            <div id="confirmation-details" style="padding: 20px; text-align: center; line-height: 1.6;">
-                </div>
-            <button class="checkout-btn" onclick="closeConfirmation()">Continue Shopping</button>
-        </div>
-    </div>
-
     <script>
+
+        const firebaseConfig = {
+  apiKey: "AIzaSyCfCyilhIwVGk-u9uz_HXa4kJj08j7iozw",
+  authDomain: "techfest-bookstore.firebaseapp.com",
+  databaseURL: "https://techfest-bookstore-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "techfest-bookstore",
+  storageBucket: "techfest-bookstore.firebasestorage.app",
+  messagingSenderId: "529918618323",
+  appId: "1:529918618323:web:637a9d1cdce9307a264226",
+  measurementId: "G-RYSTVB87LS"
+};
         // Book inventory
-
-        (function(){
-    emailjs.init({
-        publicKey: "zkULap0MG4jY0YiE4", // <-- HERE
-    });
-})();
-
         const books = [
             {
                 id: 1,
@@ -776,23 +783,6 @@
             document.getElementById('checkout-form').reset();
         }
 
-        function showConfirmation(order) {
-            const detailsContainer = document.getElementById('confirmation-details');
-            detailsContainer.innerHTML = `
-                <p>Thank you for your order, <strong>${order.name}</strong>!</p>
-                <p>Your Order ID is: <strong style="color: #764ba2;">${order.orderId}</strong></p>
-                <p>A confirmation has been sent to <strong>${order.email}</strong>.</p>
-                <p>We will contact you at <strong>${order.phone}</strong> for delivery arrangements.</p>
-                <hr style="margin: 20px 0;">
-                <h3>Total Amount: ₹${order.total}</h3>
-            `;
-            document.getElementById('confirmation-modal').style.display = 'block';
-        }
-
-        function closeConfirmation() {
-            document.getElementById('confirmation-modal').style.display = 'none';
-        }
-
         // Handle form submission
         document.getElementById('checkout-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -820,33 +810,17 @@
                     book.stock -= cartItem.quantity;
                 }
             });
-
-            const emailParams = {
-        order_id: formData.orderId,
-        user_name: formData.name,
-        user_email: formData.email,
-        user_phone: formData.phone,
-        order_total: formData.total,
-        order_items: formData.items.map(item => `- ${item.title} (x${item.quantity})`).join('\n')
-    };
-
-            emailjs.send('service_gimtres', 'template_ac2vcyc', emailParams) // <-- PASTE YOUR IDs HERE
-    .then(function(response) {
-        console.log('SUCCESS! Email sent.');
-    }, function(error) {
-        console.log('FAILED...', error);
-    });
             
-            // Close checkout and show confirmation
-            closeCheckoutForm();
-            showConfirmation(formData);
+            // Show success message
+            alert(`Order placed successfully!\nOrder ID: ${formData.orderId}\nTotal: ₹${formData.total}\n\nWe will contact you at ${formData.phone} for delivery.`);
             
-            // Clear cart and update displays
+            // Clear cart and close modal
             cart = [];
             updateCartDisplay();
+            closeCheckoutForm();
             renderBooks();
             
-            showNotification('Your order has been recorded!');
+            showNotification('Order placed successfully! Check Admin Panel for details.');
         });
 
         function openAdminPanel() {
@@ -899,8 +873,8 @@
                 
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                     <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
-                    <button class="export-btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="renderAdminPanel(); showNotification('Orders refreshed!');">🔄 Refresh Orders</button>
-                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; renderAdminPanel(); showNotification('All orders deleted!'); }">🗑️ Clear All Orders</button>
+                    <button class="export-btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="loadSavedOrders(); renderAdminPanel(); showNotification('Orders refreshed!');">🔄 Refresh Orders</button>
+                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; localStorage.removeItem('bookstore_orders'); renderAdminPanel(); showNotification('All orders deleted!'); }">🗑️ Clear All Orders</button>
                 </div>
                 
                 <h3>All Orders:</h3>
@@ -975,6 +949,15 @@
         renderBooks();
         updateCartDisplay();
         
+        // Show payment mode notification
+        window.addEventListener('load', function() {
+            if (!PAYMENT_CONFIG.enablePayments || PAYMENT_CONFIG.razorpayKey === 'rzp_test_YourTestKeyHere') {
+                setTimeout(() => {
+                    showNotification('💳 Payment System: TEST MODE - No real payments will be processed');
+                }, 1000);
+            }
+        });
+
         // Close modals when clicking outside
         window.onclick = function(event) {
             if (event.target.classList && event.target.classList.contains('modal')) {
