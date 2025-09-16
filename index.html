@@ -1337,7 +1337,53 @@
             const data = snap.val() || {};
             books = Object.values(data).sort((a, b) => a.id - b.id);
             renderBooks();
+            // After rendering, attempt to fill missing covers in the background
+            fillMissingBookCovers(books);
         });
+
+        function isValidHttpUrl(url) {
+            return typeof url === 'string' && /^https?:\/\//i.test(url.trim());
+        }
+
+        function isPlaceholderUrl(url) {
+            return typeof url === 'string' && url.includes('via.placeholder.com');
+        }
+
+        async function fetchCoverFromOpenLibrary(title, author) {
+            try {
+                const params = new URLSearchParams();
+                if (title) params.set('title', title);
+                if (author) params.set('author', author);
+                params.set('limit', '1');
+                const resp = await fetch(`https://openlibrary.org/search.json?${params.toString()}`);
+                if (!resp.ok) return '';
+                const data = await resp.json();
+                const doc = data && Array.isArray(data.docs) && data.docs[0];
+                const coverId = doc && (doc.cover_i || (Array.isArray(doc.cover_edition_key) && doc.cover_edition_key[0]));
+                if (coverId) {
+                    return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
+                }
+                return '';
+            } catch (e) {
+                return '';
+            }
+        }
+
+        async function fillMissingBookCovers(currentBooks) {
+            // Sequentially process to avoid rate limits
+            for (const book of currentBooks) {
+                const hasValid = isValidHttpUrl(book.image) && !isPlaceholderUrl(book.image);
+                if (hasValid) continue;
+                const coverUrl = await fetchCoverFromOpenLibrary(book.title, book.author);
+                if (isValidHttpUrl(coverUrl)) {
+                    try {
+                        await booksRef.child(String(book.id)).child('image').set(coverUrl);
+                    } catch {}
+                }
+                // Small delay between requests
+                await new Promise(r => setTimeout(r, 200));
+            }
+        }
 
         function renderBooks() {
             const container = document.getElementById('books-container');
@@ -1362,10 +1408,12 @@
                     stockText = `Only ${book.stock} left!`;
                 }
 
-                // Add a placeholder image if not present
-                const imageUrl = book.image || 'https://via.placeholder.com/150x220?text=Book+Cover';
+                // Validate URL; fallback to placeholder; handle broken images gracefully
+                const rawImage = (book.image && typeof book.image === 'string') ? book.image.trim() : '';
+                const isValidUrl = /^https?:\/\//i.test(rawImage);
+                const imageUrl = isValidUrl ? rawImage : 'https://via.placeholder.com/150x220?text=Book+Cover';
                 bookCard.innerHTML = `
-                    <img src="${imageUrl}" alt="${book.title} cover" class="book-image" style="width:150px;height:220px;object-fit:cover;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                    <img src="${imageUrl}" alt="${book.title} cover" class="book-image" style="width:150px;height:220px;object-fit:cover;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);" onerror="this.onerror=null;this.src='https://via.placeholder.com/150x220?text=Book+Cover';">
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-category"><strong>Category:</strong> ${book.category}</div>
