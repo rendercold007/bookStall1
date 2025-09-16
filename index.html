@@ -1341,6 +1341,14 @@
             fillMissingBookCovers(books);
         });
 
+        // Expose a simple admin helper to update a book from the browser console
+        window.updateBook = function(id, fields) {
+            try {
+                if (!id || typeof fields !== 'object') return;
+                booksRef.child(String(id)).update(fields);
+            } catch {}
+        };
+
         function isValidHttpUrl(url) {
             return typeof url === 'string' && /^https?:\/\//i.test(url.trim());
         }
@@ -1372,6 +1380,17 @@
         async function fillMissingBookCovers(currentBooks) {
             // Sequentially process to avoid rate limits
             for (const book of currentBooks) {
+                // One-time auto-fix for id=3 wrong title/image lingering in DB
+                if (book && Number(book.id) === 3) {
+                    const desired = SEED_BOOKS.find(b => b.id === 3) || {};
+                    const updates = {};
+                    if (desired.title && book.title !== desired.title) updates.title = desired.title;
+                    const imgOk = isValidHttpUrl(book.image) && !isPlaceholderUrl(book.image);
+                    if (desired.image && !imgOk) updates.image = desired.image;
+                    if (Object.keys(updates).length) {
+                        try { await booksRef.child('3').update(updates); } catch {}
+                    }
+                }
                 const hasValid = isValidHttpUrl(book.image) && !isPlaceholderUrl(book.image);
                 if (hasValid) continue;
                 const coverUrl = await fetchCoverFromOpenLibrary(book.title, book.author);
