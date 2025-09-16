@@ -1367,11 +1367,42 @@
                 if (!resp.ok) return '';
                 const data = await resp.json();
                 const doc = data && Array.isArray(data.docs) && data.docs[0];
-                const coverId = doc && (doc.cover_i || (Array.isArray(doc.cover_edition_key) && doc.cover_edition_key[0]));
-                if (coverId) {
-                    return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
+                if (!doc) return '';
+                // Prefer cover id when available
+                if (doc.cover_i) {
+                    return `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`;
+                }
+                // Try ISBN-based cover
+                if (Array.isArray(doc.isbn) && doc.isbn[0]) {
+                    const isbn = String(doc.isbn[0]);
+                    return `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
+                }
+                // Try OLID (edition key)
+                if (doc.cover_edition_key) {
+                    const olid = String(doc.cover_edition_key);
+                    return `https://covers.openlibrary.org/b/olid/${olid}-M.jpg`;
                 }
                 return '';
+            } catch (e) {
+                return '';
+            }
+        }
+
+        async function fetchCoverFromGoogleBooks(title, author) {
+            try {
+                const params = new URLSearchParams();
+                if (title) params.set('q', `intitle:${title}`);
+                if (author) params.set('q', (params.get('q') ? params.get('q') + ' ' : '') + `inauthor:${author}`);
+                params.set('maxResults', '1');
+                const resp = await fetch(`https://www.googleapis.com/books/v1/volumes?${params.toString()}`);
+                if (!resp.ok) return '';
+                const data = await resp.json();
+                const item = data && Array.isArray(data.items) && data.items[0];
+                const links = item && item.volumeInfo && item.volumeInfo.imageLinks;
+                const url = links && (links.large || links.medium || links.thumbnail || links.smallThumbnail);
+                if (!url) return '';
+                // Ensure https and try to get a larger image when possible
+                return String(url).replace(/^http:/, 'https:');
             } catch (e) {
                 return '';
             }
@@ -1393,7 +1424,12 @@
                 }
                 const hasValid = isValidHttpUrl(book.image) && !isPlaceholderUrl(book.image);
                 if (hasValid) continue;
-                const coverUrl = await fetchCoverFromOpenLibrary(book.title, book.author);
+                // Try Open Library first
+                let coverUrl = await fetchCoverFromOpenLibrary(book.title, book.author);
+                // Fallback to Google Books if needed
+                if (!isValidHttpUrl(coverUrl)) {
+                    coverUrl = await fetchCoverFromGoogleBooks(book.title, book.author);
+                }
                 if (isValidHttpUrl(coverUrl)) {
                     try {
                         await booksRef.child(String(book.id)).child('image').set(coverUrl);
