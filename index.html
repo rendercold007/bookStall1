@@ -447,7 +447,8 @@
                 author: "James Clear",
                 price: 899,
                 stock: 1,
-                category: "Self help"
+                category: "Self help",
+                image: "https://www.bookishadda.com/cdn/shop/files/230_f298f5c0-c116-4280-bef6-5d00db25b743.png?v=1701690525"
             },
             {
                 id: 2,
@@ -455,7 +456,8 @@
                 author: "J. K. Rowling",
                 price: 599,
                 stock: 1,
-                category: ""
+                category: "",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 3,
@@ -463,7 +465,8 @@
                 author: "Holly Jackson",
                 price: 750,
                 stock: 1,
-                category: "Novel"
+                category: "Novel",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 4,
@@ -471,7 +474,8 @@
                 author: "Holly Jackson",
                 price: 650,
                 stock: 1,
-                category: "Novel"
+                category: "Novel",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 5,
@@ -479,7 +483,8 @@
                 author: "Holly Jackson",
                 price: 1200,
                 stock: 1,
-                category: "Novel"
+                category: "Novel",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 6,
@@ -487,7 +492,8 @@
                 author: "Sadhguru",
                 price: 950,
                 stock: 1,
-                category: "spirituality"
+                category: "spirituality",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 7,
@@ -495,7 +501,8 @@
                 author: "Sadhguru",
                 price: 780,
                 stock: 1,
-                category: "Spirituality,Self help"
+                category: "Spirituality,Self help",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 8,
@@ -503,7 +510,8 @@
                 author: "Shaurya Kapoor",
                 price: 820,
                 stock: 1,
-                category: "Self Help and personal development"
+                category: "Self Help and personal development",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 9,
@@ -511,7 +519,8 @@
                 author: "J. Sai Deepak",
                 price: 780,
                 stock: 2,
-                category: " Constitutional Law, History, Political Science"
+                category: " Constitutional Law, History, Political Science",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 10,
@@ -1227,7 +1236,10 @@
                     stockText = `Only ${book.stock} left!`;
                 }
 
+                // Add a placeholder image if not present
+                const imageUrl = book.image || 'https://via.placeholder.com/150x220?text=Book+Cover';
                 bookCard.innerHTML = `
+                    <img src="${imageUrl}" alt="${book.title} cover" class="book-image" style="width:150px;height:220px;object-fit:cover;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-category"><strong>Category:</strong> ${book.category}</div>
@@ -1239,14 +1251,15 @@
                 `;
 
                 container.appendChild(bookCard);
-            });
-        }
-
-        function addToCart(bookId) {
-            const book = books.find(b => b.id === bookId);
-            
-            if (book && book.stock > 0) {
-                const existingItem = cart.find(item => item.id === bookId);
+            {
+                id: 10,
+                title: "The God of Small things",
+                author: " Arundhati Roy",
+                price: 780,
+                stock: 1,
+                category: " Contemporary Indian English Novel",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
+            },
                 
                 if (existingItem) {
                     if (existingItem.quantity < book.stock) {
