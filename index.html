@@ -6,7 +6,6 @@
     <title>TechFest Book Store</title>
 
     <style>
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -57,7 +56,7 @@
             flex-wrap: wrap;
         }
 
-        .cart-info, .admin-btn {
+        .cart-info {
             padding: 15px 25px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
@@ -69,11 +68,7 @@
             font-size: 1em;
         }
 
-        .admin-btn {
-            background: linear-gradient(135deg, #dc2626, #991b1b);
-        }
-
-        .cart-info:hover, .admin-btn:hover {
+        .cart-info:hover {
             transform: scale(1.05);
         }
 
@@ -211,10 +206,6 @@
             animation: slideUp 0.3s ease;
         }
 
-        .admin-modal-content {
-            max-width: 900px;
-        }
-
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -340,86 +331,6 @@
             min-height: 80px;
         }
 
-        .order-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .order-table th, .order-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .order-table th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            font-weight: bold;
-        }
-
-        .order-table tr:hover {
-            background: #f5f5f5;
-        }
-
-        .order-details {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .order-details h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .order-books {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .export-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .export-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            margin-top: 5px;
-            opacity: 0.9;
-        }
-
         .notification {
             position: fixed;
             bottom: 20px;
@@ -441,27 +352,26 @@
                 transform: translateX(0);
             }
         }
-        </style>
-        <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-        <script>
-            // Your web app's Firebase configuration
-            const firebaseConfig = {
-                apiKey: "AIzaSyCfCyilhIwVGk-u9uz_HXa4kJj08j7iozw",
-                authDomain: "techfest-bookstore.firebaseapp.com",
-                databaseURL: "https://techfest-bookstore-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "techfest-bookstore",
-                storageBucket: "techfest-bookstore.firebasestorage.app",
-                messagingSenderId: "529918618323",
-                appId: "1:529918618323:web:637a9d1cdce9307a264226",
-                measurementId: "G-RYSTVB87LS"
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-        </script>
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCfCyilhIwVGk-u9uz_HXa4kJj08j7iozw",
+            authDomain: "techfest-bookstore.firebaseapp.com",
+            databaseURL: "https://techfest-bookstore-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "techfest-bookstore",
+            storageBucket: "techfest-bookstore.appspot.com",
+            messagingSenderId: "529918618323",
+            appId: "1:529918618323:web:637a9d1cdce9307a264226",
+            measurementId: "G-RYSTVB87LS"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
 </head>
 <body>
     <div class="container">
@@ -472,16 +382,12 @@
                 <button class="cart-info" onclick="toggleCart()">
                     🛒 Cart: <span id="cart-count">0</span> items | Total: ₹<span id="cart-total">0</span>
                 </button>
-                <button class="admin-btn" onclick="openAdminPanel()">
-                    🔐 Admin Panel
-                </button>
             </div>
         </header>
 
         <div class="books-grid" id="books-container"></div>
     </div>
 
-    <!-- Cart Modal -->
     <div class="modal" id="cart-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -492,7 +398,6 @@
         </div>
     </div>
 
-    <!-- Checkout Form Modal -->
     <div class="modal" id="checkout-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -532,18 +437,7 @@
         </div>
     </div>
 
-    <!-- Admin Panel Modal -->
-    <div class="modal" id="admin-modal">
-        <div class="modal-content admin-modal-content">
-            <div class="modal-header">
-                <h2>🔐 Admin Panel - Order Management</h2>
-                <span class="close-modal" onclick="closeAdminPanel()">&times;</span>
-            </div>
-            <div id="admin-content"></div>
-        </div>
-    </div>
-
-        <script>
+    <script>
         // ...existing code...
         // Book inventory
         const books = [
@@ -1306,10 +1200,9 @@
         ];
 
         let cart = [];
-        let orders = []; // Store all orders
 
         const database = firebase.database();
-const ordersRef = database.ref('orders'); // This points to a location named 'orders' in your database
+        const ordersRef = database.ref('orders'); // This points to a location named 'orders' in your database
 
         function renderBooks() {
             const container = document.getElementById('books-container');
@@ -1480,8 +1373,7 @@ const ordersRef = database.ref('orders'); // This points to a location named 'or
                 total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
             };
             
-            // Add order to orders array
-           // Save the order to Firebase using its unique orderId
+            // Save the order to Firebase using its unique orderId
             ordersRef.child(formData.orderId).set(formData);
             
             // Update stock
@@ -1501,183 +1393,8 @@ const ordersRef = database.ref('orders'); // This points to a location named 'or
             closeCheckoutForm();
             renderBooks();
             
-            showNotification('Order placed successfully! Check Admin Panel for details.');
+            showNotification('Order placed successfully!');
         });
-
-        function openAdminPanel() {
-            const password = prompt('Enter admin password:');
-            if (password === 'admin123') { // You can change this password
-                document.getElementById('admin-modal').style.display = 'block';
-                renderAdminPanel();
-            } else if (password !== null) {
-                alert('Incorrect password!');
-            }
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('admin-modal').style.display = 'none';
-        }
-
-        function renderAdminPanel() {
-            const adminContent = document.getElementById('admin-content');
-            
-            function renderAdminPanel() {
-    const adminContent = document.getElementById('admin-content');
-    adminContent.innerHTML = `<p>Loading orders...</p>`; // Show a loading message
-
-    // Fetch orders from Firebase
-    ordersRef.once('value', snapshot => {
-        const data = snapshot.val();
-        
-        // Convert the orders object from Firebase into an array
-        const orders = data ? Object.values(data) : [];
-
-        if (orders.length === 0) {
-            adminContent.innerHTML = `
-                <div class="empty-cart">
-                    <p>No orders yet</p>
-                    <p>Orders saved in Firebase will appear here</p>
-                </div>
-            `;
-            return;
-        }
-
-        // --- The rest of your code to display stats and orders remains the same ---
-        const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
-        const totalBooks = orders.reduce((sum, order) => 
-            sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
-        
-        let html = `
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">${orders.length}</div>
-                    <div class="stat-label">Total Orders</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">₹${totalRevenue}</div>
-                    <div class="stat-label">Total Revenue</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${totalBooks}</div>
-                    <div class="stat-label">Books Sold</div>
-                </div>
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
-            </div>
-            
-            <h3>All Orders:</h3>
-        `;
-        
-        orders.forEach(order => {
-            const booksList = order.items.map(item => 
-                `${item.title} (×${item.quantity})`
-            ).join(', ');
-            
-            html += `
-                <div class="order-details">
-                    <h3>Order #${order.orderId}</h3>
-                    <p><strong>Date:</strong> ${order.timestamp}</p>
-                    <p><strong>Customer:</strong> ${order.name}</p>
-                    <p><strong>Email:</strong> ${order.email}</p>
-                    <p><strong>Phone:</strong> ${order.phone}</p>
-                    <p><strong>College:</strong> ${order.college}</p>
-                    <p><strong>Roll No:</strong> ${order.rollno}</p>
-                    <p><strong>Address:</strong> ${order.address}</p>
-                    <p class="order-books"><strong>Books:</strong> ${booksList}</p>
-                    <p style="font-size: 1.2em; color: #667eea;"><strong>Total:</strong> ₹${order.total}</p>
-                </div>
-            `;
-        });
-        
-        adminContent.innerHTML = html;
-    });
-}
-            
-            // Calculate statistics
-            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
-            const totalBooks = orders.reduce((sum, order) => 
-                sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
-            
-            let html = `
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">${orders.length}</div>
-                        <div class="stat-label">Total Orders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">₹${totalRevenue}</div>
-                        <div class="stat-label">Total Revenue</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${totalBooks}</div>
-                        <div class="stat-label">Books Sold</div>
-                    </div>
-                </div>
-                
-                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                    <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
-                    <button class="export-btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="loadSavedOrders(); renderAdminPanel(); showNotification('Orders refreshed!');">🔄 Refresh Orders</button>
-                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; localStorage.removeItem('bookstore_orders'); renderAdminPanel(); showNotification('All orders deleted!'); }">🗑 Clear All Orders</button>
-                </div>
-                
-                <h3>All Orders:</h3>
-            `;
-            
-            orders.forEach(order => {
-                const booksList = order.items.map(item => 
-                    `${item.title} (×${item.quantity})`
-                ).join(', ');
-                
-                html += `
-                    <div class="order-details">
-                        <h3>Order #${order.orderId}</h3>
-                        <p><strong>Date:</strong> ${order.timestamp}</p>
-                        <p><strong>Customer:</strong> ${order.name}</p>
-                        <p><strong>Email:</strong> ${order.email}</p>
-                        <p><strong>Phone:</strong> ${order.phone}</p>
-                        <p><strong>College:</strong> ${order.college}</p>
-                        <p><strong>Roll No:</strong> ${order.rollno}</p>
-                        <p><strong>Address:</strong> ${order.address}</p>
-                        <p class="order-books"><strong>Books:</strong> ${booksList}</p>
-                        <p style="font-size: 1.2em; color: #667eea;"><strong>Total:</strong> ₹${order.total}</p>
-                    </div>
-                `;
-            });
-            
-            adminContent.innerHTML = html;
-        }
-
-        function exportToCSV() {
-            if (orders.length === 0) {
-                alert('No orders to export!');
-                return;
-            }
-            
-            let csv = 'Order ID,Date,Name,Email,Phone,College,Roll No,Address,Books,Total\n';
-            
-            orders.forEach(order => {
-                const booksList = order.items.map(item => 
-                    `${item.title} (x${item.quantity})`
-                ).join('; ');
-                
-                csv += `"${order.orderId}","${order.timestamp}","${order.name}","${order.email}","${order.phone}","${order.college}","${order.rollno}","${order.address}","${booksList}","₹${order.total}"\n`;
-            });
-            
-            // Create download link
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `bookstore_orders_${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-            
-            showNotification('Orders exported to CSV!');
-        }
 
         function showNotification(message) {
             const notification = document.createElement('div');
@@ -1694,15 +1411,6 @@ const ordersRef = database.ref('orders'); // This points to a location named 'or
         renderBooks();
         updateCartDisplay();
         
-        // Show payment mode notification
-        window.addEventListener('load', function() {
-            if (!PAYMENT_CONFIG.enablePayments || PAYMENT_CONFIG.razorpayKey === 'rzp_test_YourTestKeyHere') {
-                setTimeout(() => {
-                    showNotification('💳 Payment System: TEST MODE - No real payments will be processed');
-                }, 1000);
-            }
-        });
-
         // Close modals when clicking outside
         window.onclick = function(event) {
             if (event.target.classList && event.target.classList.contains('modal')) {
