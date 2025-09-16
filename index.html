@@ -1230,6 +1230,7 @@
                 bookCard.innerHTML = `
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
+                    <div class="book-category"><strong>Category:</strong> ${book.category}</div>
                     <div class="book-price">₹${book.price}</div>
                     <div class="book-stock ${stockClass}">${stockText}</div>
                     <button class="add-to-cart" onclick="addToCart(${book.id})" ${buttonDisabled ? 'disabled' : ''}>
