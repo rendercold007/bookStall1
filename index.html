@@ -1193,6 +1193,15 @@
                 price: 780,
                 stock: 1,
                 category: "Drama, Social Commentary"
+            }, 
+            {
+                id: 10,
+                title: "The God of Small things",
+                author: " Arundhati Roy",
+                price: 780,
+                stock: 1,
+                category: " Contemporary Indian English Novel",
+                image: "https://via.placeholder.com/150x220?text=Book+Cover"
             },
             {
                 id: 94,
@@ -1250,38 +1259,36 @@
                     </button>
                 `;
 
-                container.appendChild(bookCard);
-            {
-                id: 10,
-                title: "The God of Small things",
-                author: " Arundhati Roy",
-                price: 780,
-                stock: 1,
-                category: " Contemporary Indian English Novel",
-                image: "https://via.placeholder.com/150x220?text=Book+Cover"
-            },
-                
-                if (existingItem) {
-                    if (existingItem.quantity < book.stock) {
-                        existingItem.quantity++;
-                    } else {
-                        alert(`Sorry! Only ${book.stock} copies available.`);
-                        return;
-                    }
-                } else {
-                    cart.push({
-                        id: book.id,
-                        title: book.title,
-                        author: book.author,
-                        price: book.price,
-                        quantity: 1
-                    });
-                }
-                
-                updateCartDisplay();
-                showNotification(`${book.title} added to cart!`);
-            }
+            container.appendChild(bookCard);
+        });
+    }
+
+    function addToCart(bookId) {
+        const book = books.find(b => b.id === bookId);
+        if (!book || book.stock === 0) {
+            alert('Sorry! This book is out of stock.');
+            return;
         }
+        const existingItem = cart.find(item => item.id === bookId);
+        if (existingItem) {
+            if (existingItem.quantity < book.stock) {
+                existingItem.quantity++;
+            } else {
+                alert(`Sorry! Only ${book.stock} copies available.`);
+                return;
+            }
+        } else {
+            cart.push({
+                id: book.id,
+                title: book.title,
+                author: book.author,
+                price: book.price,
+                quantity: 1
+            });
+        }
+        updateCartDisplay();
+        showNotification(`${book.title} added to cart!`);
+    }
 
         function removeFromCart(bookId) {
             cart = cart.filter(item => item.id !== bookId);
