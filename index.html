@@ -549,68 +549,760 @@
         const books = [
             {
                 id: 1,
-                title: "Introduction to Algorithms",
-                author: "Thomas H. Cormen",
+                title: " Atomic habits",
+                author: "James Clear",
                 price: 899,
-                stock: 5,
-                category: "Computer Science"
+                stock: 1,
+                category: "Self help"
             },
             {
                 id: 2,
-                title: "Clean Code",
-                author: "Robert C. Martin",
+                title: "Harry Potter set",
+                author: "J. K. Rowling",
                 price: 599,
-                stock: 3,
-                category: "Programming"
+                stock: 1,
+                category: ""
             },
             {
                 id: 3,
-                title: "The Pragmatic Programmer",
-                author: "David Thomas",
+                title: "Good Girl Guide To Mother",
+                author: "Holly Jackson",
                 price: 750,
-                stock: 0,
-                category: "Programming"
+                stock: 1,
+                category: "Novel"
             },
             {
                 id: 4,
-                title: "Design Patterns",
-                author: "Gang of Four",
+                title: "Good girl Bad Blood",
+                author: "Holly Jackson",
                 price: 650,
-                stock: 2,
-                category: "Software Engineering"
+                stock: 1,
+                category: "Novel"
             },
             {
                 id: 5,
-                title: "Artificial Intelligence: A Modern Approach",
-                author: "Stuart Russell",
+                title: "As Good As Dead",
+                author: "Holly Jackson",
                 price: 1200,
-                stock: 8,
-                category: "AI/ML"
+                stock: 1,
+                category: "Novel"
             },
             {
                 id: 6,
-                title: "Deep Learning",
-                author: "Ian Goodfellow",
+                title: "Death An inside story",
+                author: "Sadhguru",
                 price: 950,
                 stock: 1,
-                category: "AI/ML"
+                category: "spirituality"
             },
             {
                 id: 7,
-                title: "Computer Networks",
-                author: "Andrew S. Tanenbaum",
+                title: "Karma",
+                author: "Sadhguru",
                 price: 780,
-                stock: 4,
-                category: "Networking"
+                stock: 1,
+                category: "Spirituality,Self help"
             },
             {
                 id: 8,
-                title: "Operating System Concepts",
-                author: "Abraham Silberschatz",
+                title: "The Art Of Not Overthinking",
+                author: "Shaurya Kapoor",
                 price: 820,
-                stock: 0,
-                category: "Operating Systems"
-            }
+                stock: 1,
+                category: "Self Help and personal development"
+            },
+            {
+                id: 9,
+                title: "India Bharat and Pakistan",
+                author: "J. Sai Deepak",
+                price: 780,
+                stock: 2,
+                category: " Constitutional Law, History, Political Science"
+            },
+            {
+                id: 10,
+                title: "The God of Small things",
+                author: " Arundhati Roy",
+                price: 780,
+                stock: 1,
+                category: " Contemporary Indian English Novel"
+            },
+            {
+                id: 11,
+                title: "A man called ove",
+                author: "Fredrik Backman",
+                price: 780,
+                stock: 1,
+                category: "Contemporary Fiction, Humour, Drama"
+            },
+            {
+                id: 12,
+                title: "Murakami Norwegian Wood",
+                author: "Haruki Murakami",
+                price: 780,
+                stock: 1,
+                category: "Contemporary Fiction, Romance"
+            },
+            {
+                id: 13,
+                title: "The Palace Of Illusion",
+                author: "Chitra Banerjee Divakaruni",
+                price: 780,
+                stock: 1,
+                category: "Mythological Fiction, Historical Fiction"
+            },
+            {
+                id: 14,
+                title: "The Stationery Shop of Tehran",
+                author: "Marjan Kamali",
+                price: 780,
+                stock: 1,
+                category: "Historical Fiction, Romance"
+            },
+            {
+                id: 15,
+                title: " Dancing In The Breeze",
+                author: "Osho",
+                price: 780,
+                stock: 1,
+                category: "Spirituality / Self-development"
+            },
+            {
+                id: 16,
+                title: "Verity",
+                author: "Colleen Hoover",
+                price: 780,
+                stock: 1,
+                category: "Psychological Thriller"
+            },
+            {
+                id: 17,
+                title: " Secret",
+                author: "Rhonda Byrne",
+                price: 780,
+                stock: 1,
+                category: "Spirituality, Law of Attraction"
+            },
+            {
+                id: 18,
+                title: " Good Vibe Good Life",
+                author: "Vex King",
+                price: 780,
+                stock: 1,
+                category: "Personal Development, Motivational"
+            },
+            {
+                id: 19,
+                title: " Manto Ki Anmol Kahaniyan",
+                author: "Saadat Hasan Manto",
+                price: 780,
+                stock: 1,
+                category: "Urdu Literature"
+            },
+            {
+                id: 20,
+                title: "Godan",
+                author: "Munshi Premchand",
+                price: 780,
+                stock: 1,
+                category: "Hindi Literature"
+            },
+            {
+                id: 21,
+                title: "Why I Am A Hindu",
+                author: "Shashi Tharoor",
+                price: 780,
+                stock: 1,
+                category: "Religion, Philosophy"
+            },
+            {
+                id: 22,
+                title: "India That Is Bharat ",
+                author: "J. Sai Deepak",
+                price: 780,
+                stock: 1,
+                category: "Constitutional Law"
+            },
+            {
+                id: 23,
+                title: "Chitralekha",
+                author: "Bhagwati Charan Verma",
+                price: 780,
+                stock: 1,
+                category: "Philosophical Novel"
+            },
+            {
+                id: 24,
+                title: "Ret Ki Machli",
+                author: "Nirmal Verma",
+                price: 780,
+                stock: 2,
+                category: "Existential / Psychological Novel"
+            },
+            {
+                id: 25,
+                title: "George orwell 1984",
+                author: "George Orwell",
+                price: 780,
+                stock: 1,
+                category: "Dystopian Fiction"
+            },
+            {
+                id: 26,
+                title: "The Subtle Art of Not Giving A Fuck",
+                author: "Mark Manson",
+                price: 780,
+                stock: 1,
+                category: "Self-help"
+            },
+            {
+                id: 27,
+                title: " The Alchemist",
+                author: "Paulo Coelho",
+                price: 780,
+                stock: 1,
+                category: "Fiction"
+            },
+            {
+                id: 28,
+                title: "The Four Agreement",
+                author: "Don Miguel Ruiz",
+                price: 780,
+                stock: 1,
+                category: "Personal Growth, Spirituality"
+            },
+            {
+                id: 29,
+                title: " Gunaho ka Devta",
+                author: "Dharamveer Bharati",
+                price: 780,
+                stock: 2,
+                category: "Hindi Literature"
+            },
+            {
+                id: 30,
+                title: "Manto Ki Shresta Kahaniyan",
+                author: "Saadat Hasan Manto",
+                price: 780,
+                stock: 1,
+                category: "Partition Literature, Realism"
+            },
+            {
+                id: 31,
+                title: "The Laws Of Human Nature",
+                author: "Robert Greene",
+                price: 780,
+                stock: 1,
+                category: "Psychology"
+            },
+            {
+                id: 32,
+                title: "The Girl Who Couldn't Love",
+                author: "Shinie Antony",
+                price: 780,
+                stock: 1,
+                category: "Psychological Fiction"
+            },
+            {
+                id: 33,
+                title: "The Devil's Staircase",
+                author: "Helen FitzGerald",
+                price: 780,
+                stock: 1,
+                category: "Psychological Thriller"
+            },
+            {
+                id: 34,
+                title: "Susan lelvis",
+                author: "",
+                price: 780,
+                stock: 1,
+                category: ""
+            },
+            {
+                id: 35,
+                title: "Think Like A Monk",
+                author: "Jay Shetty",
+                price: 780,
+                stock: 1,
+                category: "Self-help"
+            },
+            {
+                id: 36,
+                title: "Osho The Book Of Man",
+                author: "Osho (Bhagwan Shree Rajneesh)",
+                price: 780,
+                stock: 1,
+                category: "Philosophy"
+            },
+            {
+                id: 37,
+                title: "The Art Of Laziness",
+                author: "T.M. Caufield",
+                price: 780,
+                stock: 1,
+                category: "Creativity, Self-help, Productivity"
+            },
+            {
+                id: 38,
+                title: " The Bell Jar",
+                author: "Sylvia Plath",
+                price: 780,
+                stock: 1,
+                category: "Semi-autobiographical Novel"
+            },
+            {
+                id: 39,
+                title: "the Metamorphosis",
+                author: "Franz Kafka",
+                price: 780,
+                stock: 1,
+                category: "Absurdist / Existential Literature"
+            },
+            {
+                id: 40,
+                title: "The Trial",
+                author: "Franz Kafka",
+                price: 780,
+                stock: 1,
+                category: "Legal Thriller"
+            },
+            {
+                id: 41,
+                title: "Too Good To Be True",
+                author: "",
+                price: 780,
+                stock: 1,
+                category: ""
+            },
+            {
+                id: 42,
+                title: "It ends with us",
+                author: "Colleen Hoover",
+                price: 780,
+                stock: 1,
+                category: "Contemporary Romance"
+            },
+            {
+                id: 43,
+                title: "it starts with us",
+                author: "Colleen Hoover",
+                price: 780,
+                stock: 1,
+                category: "Contemporary Romance"
+            },
+            {
+                id: 44,
+                title: " You Can win",
+                author: "Shiv Khera",
+                price: 780,
+                stock: 1,
+                category: "Self-help, Motivational"
+            },
+            {
+                id: 45,
+                title: "The Housemaid",
+                author: "Freida McFadden",
+                price: 780,
+                stock: 1,
+                category: "Psychological Thriller"
+            },
+            {
+                id: 46,
+                title: "How to kill Your Family",
+                author: "Bella Mackie",
+                price: 780,
+                stock: 1,
+                category: "Dark Comedy"
+            },
+            {
+                id: 47,
+                title: " Sambhog Se Samadhi Ki Aur",
+                author: "Osho (Bhagwan Shree Rajneesh)",
+                price: 780,
+                stock: 1,
+                category: "Philosophy"
+            },
+            {
+                id: 48,
+                title: "Mai Mrityu Sikhata Hoon",
+                author: "Osho (Bhagwan Shree Rajneesh)",
+                price: 780,
+                stock: 1,
+                category: "Spirituality"
+            },
+            {
+                id: 49,
+                title: "Stillness Speaks",
+                author: "Eckhart Tolle",
+                price: 780,
+                stock: 1,
+                category: "Self-help"
+            },
+            {
+                id: 50,
+                title: "Best Greek Legends",
+                author: "Nikolaos Ch. Politis",
+                price: 780,
+                stock: 1,
+                category: "Mythology"
+            },
+            {
+                id: 51,
+                title: "A place called perfect",
+                author: "Cecelia Ahern",
+                price: 780,
+                stock: 1,
+                category: "Romance"
+            },
+            {
+                id: 52,
+                title: "How to stop overthinking forever",
+                author: "S.J. Scott & Barrie Davenport",
+                price: 780,
+                stock: 1,
+                category: "Psychology"
+            },
+            {
+                id: 53,
+                title: "Deewar mai ek Khidki rehti hai",
+                author: "Vinod Kumar Shukla",
+                price: 780,
+                stock: 1,
+                category: "Magic Realism"
+            },
+            {
+                id: 54,
+                title: "Half Girlfriend",
+                author: "Chetan Bhagat",
+                price: 780,
+                stock: 1,
+                category: "Contemporary Romance"
+            },
+            {
+                id: 55,
+                title: "I Don't Love You Anymore",
+                author: "Ravinder Singh",
+                price: 780,
+                stock: 1,
+                category: "Romance,Contemporary Literature"
+            },
+            {
+                id: 56,
+                title: "Thank You For Leaving",
+                author: "Victoria Connelly",
+                price: 780,
+                stock: 1,
+                category: "Thriller"
+            },
+            {
+                id: 57,
+                title: " Can We Be Strangers Again",
+                author: "Ravinder Singh",
+                price: 780,
+                stock: 1,
+                category: "Romance, Fiction"
+            },
+            {
+                id: 58,
+                title: "The Silent Patient",
+                author: "lex Michaelides",
+                price: 780,
+                stock: 1,
+                category: "Psychological Thriller, Mystery"
+            },
+            {
+                id: 59,
+                title: "Wings Of Fire",
+                author: "A.P.J. Abdul Kalam with Arun Tiwari",
+                price: 780,
+                stock: 1,
+                category: "Autobiography"
+            },
+            {
+                id: 60,
+                title: "The Kite Runner",
+                author: "Khaled Hosseini",
+                price: 780,
+                stock: 1,
+                category: "Historical Fiction"
+            },
+            {
+                id: 61,
+                title: "The Mountain is You",
+                author: "Brianna Wiest",
+                price: 780,
+                stock: 1,
+                category: "Self-help"
+            },
+            {
+                id: 62,
+                title: "The 5am Club",
+                author: "Robin Sharma",
+                price: 780,
+                stock: 1,
+                category: "Self-help"
+            },
+            {
+                id: 63,
+                title: "The immortals Of Meluha",
+                author: "Amish Tripathi",
+                price: 780,
+                stock: 1,
+                category: "Mythology"
+            },
+            {
+                id: 64,
+                title: "The secret of Nagas",
+                author: "Amish Tripathi",
+                price: 780,
+                stock: 1,
+                category: "Fantasy Fiction"
+            },
+            {
+                id: 65,
+                title: " The oath Of vayuputras",
+                author: "Amish Tripathi",
+                price: 780,
+                stock: 1,
+                category: "Historical Fiction"
+            },
+            {
+                id: 66,
+                title: "The Diary of A Young Girl",
+                author: "Anne Frank",
+                price: 780,
+                stock: 1,
+                category: "Autobiography"
+            },
+            {
+                id: 67,
+                title: "Ek onkar Satnam",
+                author: "Osho",
+                price: 780,
+                stock: 1,
+                category: "Religion & Spirituality / Philosophy"
+            },
+            {
+                id: 68,
+                title: "A Thousand Splendid Suns",
+                author: "Khaled Hosseini",
+                price: 780,
+                stock: 1,
+                category: "Historical Fiction"
+            },
+            {
+                id: 69,
+                title: "To kill A mockingbird",
+                author: "Harper Lee",
+                price: 780,
+                stock: 1,
+                category: "Classic Fiction"
+            },
+            {
+                id: 70,
+                title: "Dark Matter",
+                author: "Blake Crouch",
+                price: 780,
+                stock: 1,
+                category: "Science Fiction"
+            },
+            {
+                id: 71,
+                title: "The Guest List",
+                author: "Lucy Foley",
+                price: 780,
+                stock: 1,
+                category: "Mystery, Thriller"
+            },
+            {
+                id: 72,
+                title: "The Essentials of Hinduism",
+                author: "Swami Bhaskarananda",
+                price: 780,
+                stock: 1,
+                category: "Spirituality"
+            },
+            {
+                id: 73,
+                title: "The Magic Of Lost Temple",
+                author: "Sudha Murty",
+                price: 780,
+                stock: 1,
+                category: "Fiction,Adventure"
+            },
+            {
+                id: 74,
+                title: "Kafan",
+                author: "Munshi Premchand",
+                price: 780,
+                stock: 1,
+                category: "Hindi Literature, Social Realism"
+            },
+            {
+                id: 75,
+                title: "Knocking at the open door",
+                author: "R. E. Mark Lee",
+                price: 780,
+                stock: 1,
+                category: "Biography/Memoir (Spiritual Teacher’s Life)"
+            },
+            {
+                id: 76,
+                title: "The Rupa Book OF Snappy Surprises",
+                author: "Ruskin Bond",
+                price: 780,
+                stock: 1,
+                category: "Short Stories"
+            },
+            {
+                id: 77,
+                title: "Autobiography Of Yogi",
+                author: "Paramahansa Yogananda",
+                price: 780,
+                stock: 1,
+                category: "Autobiography, Spirituality"
+            },
+            {
+                id: 78,
+                title: "And The mountains Echoed",
+                author: "Khaled Hosseini",
+                price: 780,
+                stock: 1,
+                category: "Historical Fiction, Family Saga"
+            },
+            {
+                id: 79,
+                title: "The Fault in Our Stars",
+                author: "John Green",
+                price: 780,
+                stock: 1,
+                category: "Romance, Contemporary Fiction"
+            },
+            {
+                id: 80,
+                title: "Life and Death",
+                author: "Stephenie Meyer",
+                price: 780,
+                stock: 1,
+                category: "Paranormal Fiction"
+            },
+            {
+                id: 81,
+                title: "Murakami Kafka on the shore",
+                author: "Haruki Murakami",
+                price: 780,
+                stock: 1,
+                category: "Fantasy, Philosophical Novel"
+            },
+            {
+                id: 82,
+                title: "Viva Santiago",
+                author: "Colin Fernandes",
+                price: 780,
+                stock: 1,
+                category: "Contemporary Fiction"
+            },
+            {
+                id: 83,
+                title: "Men are from mars women are from venus",
+                author: "John Gray",
+                price: 780,
+                stock: 1,
+                category: "Self-help"
+            },
+            {
+                id: 84,
+                title: " Power",
+                author: "",
+                price: 780,
+                stock: 1,
+                category: "Self help"
+            },
+            {
+                id: 85,
+                title: "Sophie's World",
+                author: "Jostein Gaarder",
+                price: 780,
+                stock: 1,
+                category: "Philosophy, Fiction"
+            },
+            {
+                id: 86,
+                title: "More days at morisaki bookshop",
+                author: "Satoshi Yagisawa",
+                price: 780,
+                stock: 1,
+                category: "Japanese Literature"
+            },
+            {
+                id: 87,
+                title: "A little Life",
+                author: "Hanya Yanagihara",
+                price: 780,
+                stock: 1,
+                category: "Fiction, Contemporary Literature, Drama"
+            },
+            {
+                id: 88,
+                title: "Pride and Prejudice",
+                author: "Jane Austen",
+                price: 780,
+                stock: 1,
+                category: "Social Commentary"
+            },
+            {
+                id: 89,
+                title: "Tami Hoag",
+                author: "Tami Hoag",
+                price: 780,
+                stock: 1,
+                category: "Thriller, Suspense, Romantic Suspense, Crime Fiction"
+            },
+            {
+                id: 90,
+                title: "Psychology Of Money",
+                author: "Morgan Housel",
+                price: 780,
+                stock: 1,
+                category: "Personal Finance, Self-help"
+            },
+            {
+                id: 91,
+                title: "Crime And Punishment",
+                author: "Fyodor Dostoevsky",
+                price: 780,
+                stock: 1,
+                category: "Psychological Fiction, Philosophical Novel"
+            },
+            {
+                id: 92,
+                title: "The Losst Symbol",
+                author: "Dan Brown",
+                price: 780,
+                stock: 1,
+                category: "hriller, Mystery, Fiction"
+            },
+            {
+                id: 93,
+                title: "The Casual vacancy",
+                author: "J.K. Rowling",
+                price: 780,
+                stock: 1,
+                category: "Drama, Social Commentary"
+            },
+            {
+                id: 94,
+                title: "Pocket diary",
+                price: 780,
+                stock: 10,
+            },
+            {
+                id: 95,
+                title: "Diary",
+                price: 780,
+                stock: 3,
+            },
         ];
 
         let cart = [];
@@ -927,7 +1619,7 @@ const ordersRef = database.ref('orders'); // This points to a location named 'or
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                     <button class="export-btn" onclick="exportToCSV()">📥 Export to CSV</button>
                     <button class="export-btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="loadSavedOrders(); renderAdminPanel(); showNotification('Orders refreshed!');">🔄 Refresh Orders</button>
-                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; localStorage.removeItem('bookstore_orders'); renderAdminPanel(); showNotification('All orders deleted!'); }">🗑️ Clear All Orders</button>
+                    <button class="export-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="if(confirm('Delete all orders? This cannot be undone!')) { orders = []; localStorage.removeItem('bookstore_orders'); renderAdminPanel(); showNotification('All orders deleted!'); }">🗑 Clear All Orders</button>
                 </div>
                 
                 <h3>All Orders:</h3>
