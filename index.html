@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechFest Book Store</title>
+    <title>TechFest Book Stall</title>
 
     <style>
         .container {
@@ -33,7 +33,7 @@
         }
 
         h1 {
-            color: #764ba2;
+            color: #1f3028;
             text-align: center;
             font-size: 2.5em;
             margin-bottom: 10px;
@@ -376,7 +376,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 TechFest Book Store</h1>
+            <h1>📚 TechFest Book Stall</h1>
             <p class="subtitle">Find Your Next Great Read at Our College Tech Fest!</p>
             <div class="header-buttons">
                 <button class="cart-info" onclick="toggleCart()">
@@ -440,7 +440,7 @@
     <script>
         // ...existing code...
         // Book inventory
-        const books = [
+        const SEED_BOOKS = [
             {
                 id: 1,
                 title: " Atomic habits",
@@ -1228,6 +1228,39 @@
 
         const database = firebase.database();
         const ordersRef = database.ref('orders'); // This points to a location named 'orders' in your database
+        const booksRef = database.ref('books');
+
+        // Live books loaded from Firebase
+        let books = [];
+
+        // Seed books to Firebase if /books is empty (one-time helper)
+        async function seedBooksIfEmpty() {
+            const snapshot = await booksRef.once('value');
+            if (snapshot.exists()) return;
+            const byId = {};
+            SEED_BOOKS.forEach(b => {
+                const key = String(b.id);
+                if (!byId[key]) {
+                    byId[key] = {
+                        id: b.id,
+                        title: b.title || '',
+                        author: b.author || '',
+                        price: b.price || 0,
+                        stock: typeof b.stock === 'number' ? b.stock : 0,
+                        category: b.category || '',
+                        image: b.image || 'https://via.placeholder.com/150x220?text=Book+Cover'
+                    };
+                }
+            });
+            await booksRef.set(byId);
+        }
+
+        // Subscribe to realtime updates for books
+        booksRef.on('value', (snap) => {
+            const data = snap.val() || {};
+            books = Object.values(data).sort((a, b) => a.id - b.id);
+            renderBooks();
+        });
 
         function renderBooks() {
             const container = document.getElementById('books-container');
@@ -1385,7 +1418,7 @@
         }
 
         // Handle form submission
-        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        document.getElementById('checkout-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = {
@@ -1401,16 +1434,31 @@
                 total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
             };
             
-            // Save the order to Firebase using its unique orderId
-            ordersRef.child(formData.orderId).set(formData);
-            
-            // Update stock
-            cart.forEach(cartItem => {
-                const book = books.find(b => b.id === cartItem.id);
-                if (book) {
-                    book.stock -= cartItem.quantity;
+            // Atomically decrement stock in Firebase using transactions
+            try {
+                const txnResults = [];
+                for (const cartItem of cart) {
+                    const stockRef = booksRef.child(String(cartItem.id)).child('stock');
+                    // Wrap transaction in a promise to await
+                    const result = await new Promise((resolve) => {
+                        stockRef.transaction((currentStock) => {
+                            if (currentStock == null) return currentStock;
+                            if (currentStock >= cartItem.quantity) {
+                                return currentStock - cartItem.quantity;
+                            }
+                            return; // abort
+                        }, (error, committed, snapshot) => {
+                            resolve({ error, committed, snapshot });
+                        }, false);
+                    });
+                    txnResults.push({ id: cartItem.id, ...result });
+                    if (!result.committed) {
+                        throw new Error('Insufficient stock for one or more items.');
+                    }
                 }
-            });
+
+                // Save the order to Firebase using its unique orderId
+                await ordersRef.child(formData.orderId).set(formData);
             
             // Show success message
             alert(`Order placed successfully!\nOrder ID: ${formData.orderId}\nTotal: ₹${formData.total}\n\nWe will contact you at ${formData.phone} for delivery.`);
@@ -1419,9 +1467,11 @@
             cart = [];
             updateCartDisplay();
             closeCheckoutForm();
-            renderBooks();
             
             showNotification('Order placed successfully!');
+            } catch (err) {
+                alert('Sorry, stock changed while you were checking out. Please review your cart and try again.');
+            }
         });
 
         function showNotification(message) {
@@ -1436,7 +1486,7 @@
         }
 
         // Initialize the page
-        renderBooks();
+        seedBooksIfEmpty();
         updateCartDisplay();
         
         // Close modals when clicking outside
