@@ -143,7 +143,7 @@
         }
 
         .book-mrp {
-            color: #041e49;
+            color: #123d86;
             text-decoration: line-through;
             font-size: 1em;
             font-weight: 500;
@@ -439,10 +439,6 @@
                     <div class="form-group">
                         <label for="rollno">Roll Number/ID</label>
                         <input type="text" id="rollno" placeholder="Your student ID (optional)">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Delivery Address/Hostel Room</label>
-                        <textarea id="address" placeholder="Where should we deliver the books? (optional)"></textarea>
                     </div>
                     <div id="order-summary"></div>
                     <button type="submit" class="checkout-btn">Place Order</button>
@@ -1689,7 +1685,6 @@
                 phone: document.getElementById('phone').value,
                 college: document.getElementById('college').value,
                 rollno: document.getElementById('rollno').value || 'N/A',
-                address: document.getElementById('address').value || 'N/A',
                 items: [...cart],
                 total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
             };
