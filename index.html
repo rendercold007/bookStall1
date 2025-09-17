@@ -135,6 +135,20 @@
             margin-bottom: 10px;
         }
 
+        .book-price-group {
+            display: flex;
+            gap: 10px;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .book-mrp {
+            color: #041e49;
+            text-decoration: line-through;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
         .book-stock {
             padding: 5px 10px;
             border-radius: 20px;
@@ -1535,7 +1549,10 @@
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">by ${book.author}</div>
                     <div class="book-category"><strong>Category:</strong> ${book.category}</div>
-                    <div class="book-price">₹${book.price}</div>
+                    <div class="book-price-group">
+                        <div class="book-price">₹${book.price}</div>
+                        ${book.mrp && book.mrp > book.price ? `<div class=\"book-mrp\">₹${book.mrp}</div>` : ''}
+                    </div>
                     <div class="book-stock ${stockClass}">${stockText}</div>
                     <button class="add-to-cart" onclick="addToCart(${book.id})" ${buttonDisabled ? 'disabled' : ''}>
                         ${buttonText}
